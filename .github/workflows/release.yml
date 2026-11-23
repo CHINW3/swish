@@ -1,0 +1,36 @@
+# Construit Swish.app sur un Mac de GitHub et le met dans la version (Release) "v2.0".
+# Se lance tout seul quand le code change, ou à la main dans l'onglet Actions.
+
+name: Construire l'app
+
+on:
+  push:
+    branches: [main]
+    paths: ["main.swift", "Info.plist", "construire.sh", "logo.png"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Construire Swish.app
+        run: bash construire.sh
+
+      - name: Créer Swish.zip
+        run: ditto -c -k --sequesterRsrc --keepParent Swish.app Swish.zip
+
+      - name: Publier dans la version v2.0
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if gh release view v2.0 >/dev/null 2>&1; then
+            gh release upload v2.0 Swish.zip --clobber
+          else
+            gh release create v2.0 Swish.zip --title "Swish 2.0" \
+              --notes "Télécharge **Swish.zip**, dézippe et glisse Swish.app dans Applications. Guide : https://chinw3.github.io/swish/#install"
+          fi
