@@ -80,6 +80,12 @@
   td.a { text-align: right; font: 400 14px var(--mono); color: var(--muted); }
   .table .note { margin-top: var(--s2); font-size: 14px; color: var(--muted); }
 
+  /* ---------- Démo ---------- */
+  .demo { display: none; padding-bottom: var(--s10); }
+  .demo.prete { display: block; }
+  .demo video { display: block; width: 100%; aspect-ratio: 16 / 9; border: 2px solid var(--ink); background: var(--panel); }
+  .demo figcaption { margin-top: var(--s2); font: 400 13px var(--mono); color: var(--muted); }
+
   /* ---------- Sections ---------- */
   section { padding: var(--s10) 0; border-top: 1px solid var(--line); }
   .label { font: 500 13px var(--mono); text-transform: uppercase; letter-spacing: .06em; color: var(--accent); }
@@ -197,6 +203,15 @@
       </p>
     </div>
   </div>
+
+  <figure class="wrap demo" id="demo">
+    <video src="swish-demo.mp4" autoplay muted loop playsinline preload="auto"
+           aria-label="Démo animée de Swish / Animated Swish demo"></video>
+    <figcaption>
+      <span data-fr>Démo animée : main droite levée → bureau suivant · poing → lecture / pause</span>
+      <span data-en>Animated demo: right hand up → next desktop · fist → play / pause</span>
+    </figcaption>
+  </figure>
 
   <section id="usages">
     <div class="wrap">
@@ -326,6 +341,12 @@
     try { depart = localStorage.getItem('lang') || ((navigator.language || '').indexOf('fr') === 0 ? 'fr' : 'en'); } catch (e) {}
     appliquer(depart);
     bouton.addEventListener('click', function () { appliquer(root.lang === 'fr' ? 'en' : 'fr'); });
+
+    // La démo ne s'affiche que si la vidéo existe
+    var demo = document.getElementById('demo');
+    var video = demo.querySelector('video');
+    video.addEventListener('loadeddata', function () { demo.classList.add('prete'); });
+    if (video.readyState >= 2) demo.classList.add('prete');
   })();
 </script>
 </body>
