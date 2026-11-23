@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Swish — Lève la main. Ton Mac fait le reste.</title>
-<meta name="description" content="Swish est une app gratuite pour Mac : lève la main devant la caméra pour changer de bureau, mettre ta musique en pause ou lancer un raccourci.">
+<title>Swish — Raise your hand. Your Mac does the rest.</title>
+<meta name="description" content="Swish is a free Mac app: raise your hand in front of the camera to switch desktops, pause your music or run a shortcut.">
 <link rel="icon" type="image/svg+xml" href="logo.svg">
 <style>
   :root {
@@ -120,11 +120,11 @@
 <header class="top">
   <div class="wrap">
     <a class="brand" href="#"><img src="logo.svg" alt="">Swish</a>
-    <nav aria-label="Principal">
+    <nav aria-label="Main">
       <a class="cache" href="#gestes"><span data-fr>Gestes</span><span data-en>Gestures</span></a>
       <a class="cache" href="#installer"><span data-fr>Installer</span><span data-en>Install</span></a>
       <a class="cache" href="#faq">FAQ</a>
-      <button class="lang" id="lang" type="button" aria-label="Changer de langue / Switch language">EN</button>
+      <button class="lang" id="lang" type="button" aria-label="Switch language / Changer de langue">FR</button>
       <a class="mini" href="https://github.com/CHINW3/swish/releases/latest/download/Swish.zip"><span data-fr>Télécharger</span><span data-en>Download</span></a>
     </nav>
   </div>
@@ -253,15 +253,16 @@
   (function () {
     var root = document.documentElement;
     var bouton = document.getElementById('lang');
-    function appliquer(l) {
+    function appliquer(l, garder) {
       root.lang = l;
       bouton.textContent = l === 'fr' ? 'EN' : 'FR';
-      try { localStorage.setItem('lang', l); } catch (e) {}
+      if (garder) { try { localStorage.setItem('swish-lang', l); } catch (e) {} }
     }
-    var depart = 'fr';
-    try { depart = localStorage.getItem('lang') || ((navigator.language || '').indexOf('fr') === 0 ? 'fr' : 'en'); } catch (e) {}
-    appliquer(depart);
-    bouton.addEventListener('click', function () { appliquer(root.lang === 'fr' ? 'en' : 'fr'); });
+    // Anglais par défaut ; on ne retient la langue que si le visiteur clique
+    var depart = 'en';
+    try { depart = localStorage.getItem('swish-lang') || 'en'; } catch (e) {}
+    appliquer(depart, false);
+    bouton.addEventListener('click', function () { appliquer(root.lang === 'fr' ? 'en' : 'fr', true); });
 
     // La capture ne s'affiche que si l'image existe
     var cap = document.getElementById('capture');
