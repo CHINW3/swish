@@ -1,11 +1,11 @@
-# Publie le site (index.html + logo.png) sur https://chinw3.github.io/swish/
+# Publie le site (index.html + logo.svg) sur https://chinw3.github.io/swish/
 
 name: Publier le site
 
 on:
   push:
     branches: [main]
-    paths: ["index.html", "logo.png"]
+    paths: ["index.html", "logo.svg", ".github/workflows/pages.yml"]
   workflow_dispatch:
 
 permissions:
@@ -29,7 +29,7 @@ jobs:
       - name: Préparer le site
         run: |
           mkdir -p _site
-          cp index.html logo.png _site/
+          cp index.html logo.svg _site/
 
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
