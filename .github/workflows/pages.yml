@@ -5,7 +5,7 @@ name: Publier le site
 on:
   push:
     branches: [main]
-    paths: ["index.html", "logo.svg", "swish-demo.mp4", "swish-capture.png", ".github/workflows/pages.yml"]
+    paths: ["index.html", "logo.svg", "swish-demo.mp4", "swish-capturee.png", ".github/workflows/pages.yml"]
   workflow_dispatch:
 
 permissions:
@@ -31,7 +31,7 @@ jobs:
           mkdir -p _site
           cp index.html logo.svg _site/
           if [ -f swish-demo.mp4 ]; then cp swish-demo.mp4 _site/; fi
-          if [ -f swish-capture.png ]; then cp swish-capture.png _site/; fi
+          if [ -f swish-capturee.png ]; then cp swish-capturee.png _site/; fi
 
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
