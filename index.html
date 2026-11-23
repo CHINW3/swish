@@ -3,328 +3,249 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Swish — Lève la main, ton Mac change de bureau</title>
-<meta name="description" content="Swish est une petite app gratuite pour Mac : lève la main devant la caméra pour changer de bureau, mettre ta musique en pause ou lancer un raccourci.">
+<title>Swish — Lève la main. Ton Mac fait le reste.</title>
+<meta name="description" content="Swish est une app gratuite pour Mac : lève la main devant la caméra pour changer de bureau, mettre ta musique en pause ou lancer un raccourci.">
 <link rel="icon" type="image/svg+xml" href="logo.svg">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  /* ---------- Système ----------
-     Espacement : multiples de 8 px
-     Couleurs   : papier, encre, une seule couleur d'accent (contraste ≥ 4.5:1)
-     Typo       : Instrument Serif (titres), IBM Plex Sans (texte), IBM Plex Mono (gestes, touches)
-  */
   :root {
-    --s1: 8px;  --s2: 16px; --s3: 24px; --s4: 32px; --s5: 40px;
-    --s6: 48px; --s8: 64px; --s10: 80px; --s12: 96px; --s16: 128px;
-
-    --paper:  #F2EEE6;
-    --panel:  #E8E2D6;
-    --ink:    #151412;
-    --muted:  #57524A;
-    --line:   #D9D3C7;
-    --accent: #B8321A;
-
-    --serif: "Instrument Serif", Georgia, "Times New Roman", serif;
-    --sans:  "IBM Plex Sans", system-ui, -apple-system, sans-serif;
-    --mono:  "IBM Plex Mono", ui-monospace, Menlo, monospace;
-
-    --page: 1120px;
+    --s1: 8px; --s2: 16px; --s3: 24px; --s4: 32px; --s5: 40px; --s6: 48px; --s8: 64px; --s10: 80px; --s12: 96px; --s16: 128px;
+    --text: #1d1d1f;
+    --gris: #6e6e73;
+    --fond: #ffffff;
+    --fond2: #f5f5f7;
+    --bleu: #0066cc;
+    --bouton: #0071e3;
+    --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, sans-serif;
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    background: var(--paper);
-    color: var(--ink);
-    font: 400 17px/1.6 var(--sans);
-    -webkit-font-smoothing: antialiased;
-  }
-  a { color: inherit; }
-  a:hover { color: var(--accent); }
-  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-  .wrap { max-width: var(--page); margin: 0 auto; padding: 0 var(--s4); }
-  .skip { position: absolute; left: -9999px; }
-  .skip:focus { left: var(--s2); top: var(--s2); background: var(--ink); color: var(--paper); padding: var(--s1) var(--s2); }
+  body { font-family: var(--font); color: var(--text); background: var(--fond); -webkit-font-smoothing: antialiased; line-height: 1.47; font-size: 17px; letter-spacing: -0.022em; }
+  a { color: var(--bleu); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  :focus-visible { outline: 2px solid var(--bouton); outline-offset: 3px; border-radius: 4px; }
+  .wrap { max-width: 1024px; margin: 0 auto; padding: 0 var(--s3); }
 
-  /* ---------- En-tête ---------- */
-  .top { border-bottom: 1px solid var(--line); }
-  .top .wrap { display: flex; align-items: center; gap: var(--s4); height: var(--s8); }
-  .brand { display: flex; align-items: center; gap: var(--s1); text-decoration: none; font-weight: 600; }
-  .brand img { width: var(--s4); height: var(--s4); }
-  .top nav { margin-left: auto; display: flex; gap: var(--s3); font-size: 15px; }
-  .top nav a { text-decoration: none; color: var(--muted); }
-  .top nav a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 4px; }
-  .lang { font: 500 13px var(--mono); background: none; border: 1px solid var(--ink); color: var(--ink);
-          padding: 4px var(--s1); cursor: pointer; }
-  .lang:hover { background: var(--ink); color: var(--paper); }
+  /* Barre du haut */
+  .top { position: sticky; top: 0; z-index: 10; background: rgba(255,255,255,.8); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); border-bottom: 1px solid rgba(0,0,0,.08); }
+  .top .wrap { display: flex; align-items: center; gap: var(--s3); height: 52px; }
+  .brand { display: flex; align-items: center; gap: var(--s1); color: var(--text); font-weight: 600; font-size: 19px; }
+  .brand:hover { text-decoration: none; }
+  .brand img { width: 26px; height: 26px; }
+  .top nav { margin-left: auto; display: flex; align-items: center; gap: var(--s3); font-size: 13px; }
+  .top nav a { color: var(--text); opacity: .8; }
+  .top nav a:hover { opacity: 1; text-decoration: none; }
+  .lang { font: 13px var(--font); background: none; border: 0; color: var(--text); opacity: .8; cursor: pointer; }
+  .mini { background: var(--bouton); color: #fff !important; opacity: 1 !important; padding: 4px 12px; border-radius: 980px; font-size: 12px; }
 
-  /* ---------- Ouverture : texte à gauche, tableau des gestes à droite ---------- */
-  .intro { display: grid; grid-template-columns: 1.1fr 1fr; gap: var(--s8); padding-top: var(--s12); padding-bottom: var(--s10); align-items: start; }
-  h1 { font: 400 clamp(48px, 6.4vw, 80px)/1.02 var(--serif); letter-spacing: -0.01em; }
-  h1 em { font-style: italic; color: var(--accent); }
-  .intro p.lede { margin-top: var(--s3); max-width: 30em; color: var(--muted); font-size: 19px; }
-  .actions { display: flex; align-items: center; gap: var(--s3); margin-top: var(--s5); flex-wrap: wrap; }
-  .download { display: inline-flex; align-items: center; gap: var(--s1); background: var(--accent); color: #fff;
-              text-decoration: none; font-weight: 600; padding: var(--s2) var(--s3); }
-  .download:hover { background: var(--ink); color: var(--paper); }
-  .meta { margin-top: var(--s2); font: 400 13px var(--mono); color: var(--muted); }
+  /* Ouverture */
+  .hero { text-align: center; padding: var(--s12) 0 var(--s6); }
+  .hero .icone { width: 96px; height: 96px; margin-bottom: var(--s2); }
+  .hero .nom { font-size: 21px; font-weight: 600; }
+  h1 { font-size: clamp(44px, 7vw, 80px); line-height: 1.05; font-weight: 700; letter-spacing: -0.015em; margin-top: var(--s1); }
+  .hero p.sous { font-size: clamp(19px, 2.2vw, 24px); color: var(--gris); margin: var(--s2) auto 0; max-width: 34em; line-height: 1.35; }
+  .actions { display: flex; justify-content: center; align-items: center; gap: var(--s4); margin-top: var(--s4); flex-wrap: wrap; }
+  .bouton { display: inline-block; background: var(--bouton); color: #fff; font-size: 17px; padding: 12px 24px; border-radius: 980px; }
+  .bouton:hover { background: #0077ed; text-decoration: none; }
+  .lien { font-size: 17px; }
+  .meta { margin-top: var(--s2); font-size: 14px; color: var(--gris); }
 
-  .table { border-top: 2px solid var(--ink); }
-  .table caption { text-align: left; font: 500 13px var(--mono); text-transform: uppercase; letter-spacing: .06em;
-                   color: var(--muted); padding-bottom: var(--s1); }
-  table { width: 100%; border-collapse: collapse; }
-  td { padding: 12px 0; border-bottom: 1px solid var(--line); vertical-align: middle; }
-  td.g { width: var(--s6); font-size: 24px; }
-  td.n { font-weight: 500; }
-  td.a { text-align: right; font: 400 14px var(--mono); color: var(--muted); }
-  .table .note { margin-top: var(--s2); font-size: 14px; color: var(--muted); }
+  /* Vidéo */
+  .demo { padding: var(--s5) 0 var(--s12); }
+  .demo video { display: block; width: 100%; border-radius: 18px; box-shadow: 0 30px 60px -20px rgba(0,0,0,.25), 0 0 0 1px rgba(0,0,0,.06); background: var(--fond2); }
 
-  /* ---------- Démo ---------- */
-  .demo { display: none; padding-bottom: var(--s10); }
-  .demo.prete { display: block; }
-  .demo video { display: block; width: 100%; aspect-ratio: 16 / 9; border: 2px solid var(--ink); background: var(--panel); }
-  .demo figcaption { margin-top: var(--s2); font: 400 13px var(--mono); color: var(--muted); }
+  /* Sections */
+  section { padding: var(--s12) 0; }
+  .gris { background: var(--fond2); }
+  h2 { font-size: clamp(36px, 5vw, 56px); line-height: 1.07; font-weight: 700; letter-spacing: -0.005em; text-align: center; }
+  .intro { text-align: center; color: var(--gris); font-size: 21px; max-width: 32em; margin: var(--s2) auto 0; line-height: 1.38; }
 
-  /* ---------- Sections ---------- */
-  section { padding: var(--s10) 0; border-top: 1px solid var(--line); }
-  .label { font: 500 13px var(--mono); text-transform: uppercase; letter-spacing: .06em; color: var(--accent); }
-  h2 { font: 400 clamp(36px, 4.4vw, 52px)/1.1 var(--serif); margin-top: var(--s1); }
+  /* Gestes */
+  .gestes { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--s2); margin-top: var(--s8); }
+  .geste { background: var(--fond); border-radius: 18px; padding: var(--s4) var(--s2) var(--s3); text-align: center; }
+  .geste .e { font-size: 56px; line-height: 1; }
+  .geste b { display: block; margin-top: var(--s2); font-size: 15px; font-weight: 600; }
+  .geste span { display: block; font-size: 13px; color: var(--gris); margin-top: 2px; }
 
-  /* Usages : liste en rangées, pas de grille de cartes */
-  .uses { margin-top: var(--s6); }
-  .use { display: grid; grid-template-columns: 220px 1fr; gap: var(--s4); padding: var(--s3) 0; border-top: 1px solid var(--line); }
-  .use:last-child { border-bottom: 1px solid var(--line); }
-  .use h3 { font-size: 17px; font-weight: 600; }
-  .use p { color: var(--muted); max-width: 38em; }
-  kbd, code { font: 400 14px var(--mono); background: var(--panel); padding: 2px 6px; color: var(--ink); }
+  /* Capture de l'app */
+  .capture { display: none; padding-top: var(--s12); }
+  .capture.prete { display: block; }
+  .capture img { display: block; width: 100%; margin-top: var(--s8); border-radius: 14px; box-shadow: 0 30px 60px -20px rgba(0,0,0,.3), 0 0 0 1px rgba(0,0,0,.06); }
 
-  /* Macros : bloc décalé, fond différent */
-  .macros { background: var(--panel); border-top: 0; }
-  .macros .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s8); align-items: start; }
-  .macros p { color: var(--muted); margin-top: var(--s3); }
-  .chain { list-style: none; font: 400 15px var(--mono); border-left: 2px solid var(--ink); }
-  .chain li { padding: 12px var(--s3); }
-  .chain li + li { border-top: 1px dashed #B9B2A4; }
-  .chain .t { color: var(--muted); }
+  /* Tuiles */
+  .tuiles { display: grid; grid-template-columns: 1.3fr 1fr; gap: var(--s2); margin-top: var(--s8); }
+  .tuile { background: var(--fond2); border-radius: 24px; padding: var(--s5); overflow: hidden; }
+  .tuile h3 { font-size: 28px; line-height: 1.14; font-weight: 700; }
+  .tuile p { color: var(--gris); margin-top: var(--s1); font-size: 17px; }
+  .tuile .grand { font-size: 64px; line-height: 1; margin-bottom: var(--s3); }
+  .tuile.noire { background: #000; color: #f5f5f7; }
+  .tuile.noire p { color: #a1a1a6; }
+  .chaine { margin-top: var(--s4); display: flex; flex-direction: column; gap: var(--s1); }
+  .chaine div { background: var(--fond); border-radius: 12px; padding: 12px var(--s2); font-size: 15px; display: flex; align-items: center; gap: var(--s2); }
+  .chaine div i { font-style: normal; color: var(--gris); font-size: 13px; margin-left: auto; }
 
-  /* Installation : colonne étroite, étapes numérotées */
-  .install .wrap { display: grid; grid-template-columns: 1fr 2fr; gap: var(--s8); }
-  ol.steps { list-style: none; counter-reset: n; }
-  ol.steps li { counter-increment: n; display: grid; grid-template-columns: var(--s6) 1fr; padding: var(--s3) 0; border-top: 1px solid var(--line); }
-  ol.steps li::before { content: counter(n, decimal-leading-zero); font: 500 14px var(--mono); color: var(--accent); padding-top: 2px; }
-  ol.steps h3 { font-size: 17px; font-weight: 600; }
-  ol.steps p { color: var(--muted); margin-top: 4px; }
-  pre { margin-top: var(--s2); background: var(--ink); color: var(--paper); font: 400 14px var(--mono); padding: var(--s2); overflow-x: auto; }
+  /* Installation */
+  .etapes { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s4); margin-top: var(--s8); }
+  .etape .n { font-size: 40px; font-weight: 700; color: var(--bouton); line-height: 1; }
+  .etape h3 { font-size: 19px; font-weight: 600; margin-top: var(--s2); }
+  .etape p { color: var(--gris); font-size: 15px; margin-top: 4px; }
+  code { font: 13px ui-monospace, "SF Mono", Menlo, monospace; background: var(--fond); border-radius: 6px; padding: 2px 6px; display: inline-block; margin-top: var(--s1); }
+  .centre { text-align: center; margin-top: var(--s8); }
 
-  /* Vie privée : une seule phrase, en grand */
-  .privacy p.big { font: 400 clamp(28px, 3.2vw, 40px)/1.25 var(--serif); max-width: 24em; margin-top: var(--s2); }
-  .privacy p.small { color: var(--muted); margin-top: var(--s3); max-width: 40em; }
-
-  /* Questions */
-  .faq .wrap { max-width: 800px; }
-  details { border-top: 1px solid var(--line); padding: var(--s3) 0; }
-  details:last-of-type { border-bottom: 1px solid var(--line); }
-  summary { cursor: pointer; font-weight: 600; list-style: none; display: flex; justify-content: space-between; gap: var(--s2); }
+  /* FAQ */
+  .faq { max-width: 720px; margin: var(--s6) auto 0; }
+  details { border-bottom: 1px solid #d2d2d7; padding: var(--s3) 0; }
+  summary { cursor: pointer; font-size: 19px; font-weight: 600; list-style: none; display: flex; justify-content: space-between; gap: var(--s2); }
   summary::-webkit-details-marker { display: none; }
-  summary::after { content: "+"; font: 400 20px var(--mono); color: var(--muted); }
+  summary::after { content: "+"; color: var(--bleu); font-weight: 400; font-size: 24px; line-height: 1; }
   details[open] summary::after { content: "–"; }
-  details p { color: var(--muted); margin-top: var(--s1); max-width: 40em; }
-  .faq h2 { margin-bottom: var(--s4); }
+  details p { color: var(--gris); margin-top: var(--s1); }
 
-  footer { border-top: 2px solid var(--ink); padding: var(--s4) 0 var(--s6); font-size: 14px; color: var(--muted); }
+  footer { background: var(--fond2); color: var(--gris); font-size: 12px; padding: var(--s3) 0 var(--s5); border-top: 1px solid #d2d2d7; }
   footer .wrap { display: flex; justify-content: space-between; gap: var(--s2); flex-wrap: wrap; }
 
-  /* Langue */
   [data-en] { display: none; }
   html[lang="en"] [data-fr] { display: none; }
   html[lang="en"] [data-en] { display: revert; }
 
-  @media (max-width: 880px) {
-    .intro, .macros .wrap, .install .wrap { grid-template-columns: 1fr; gap: var(--s5); }
-    .intro { padding-top: var(--s8); }
-    .use { grid-template-columns: 1fr; gap: var(--s1); }
-    .top nav a.hide-sm { display: none; }
-    .wrap { padding-left: var(--s3); padding-right: var(--s3); }
+  @media (max-width: 860px) {
+    .gestes { grid-template-columns: repeat(2, 1fr); }
+    .tuiles, .etapes { grid-template-columns: 1fr; }
+    .top nav a.cache { display: none; }
+    .hero { padding-top: var(--s8); }
+    section { padding: var(--s10) 0; }
   }
 </style>
 </head>
 <body>
-<a class="skip" href="#main"><span data-fr>Aller au contenu</span><span data-en>Skip to content</span></a>
 
 <header class="top">
   <div class="wrap">
     <a class="brand" href="#"><img src="logo.svg" alt="">Swish</a>
     <nav aria-label="Principal">
-      <a class="hide-sm" href="#usages"><span data-fr>Usages</span><span data-en>Uses</span></a>
-      <a class="hide-sm" href="#installer"><span data-fr>Installer</span><span data-en>Install</span></a>
-      <a class="hide-sm" href="#questions">FAQ</a>
-      <a href="https://github.com/CHINW3/swish">GitHub</a>
+      <a class="cache" href="#gestes"><span data-fr>Gestes</span><span data-en>Gestures</span></a>
+      <a class="cache" href="#installer"><span data-fr>Installer</span><span data-en>Install</span></a>
+      <a class="cache" href="#faq">FAQ</a>
+      <button class="lang" id="lang" type="button" aria-label="Changer de langue / Switch language">EN</button>
+      <a class="mini" href="https://github.com/CHINW3/swish/releases/latest/download/Swish.zip"><span data-fr>Télécharger</span><span data-en>Download</span></a>
     </nav>
-    <button class="lang" id="lang" type="button" aria-label="Changer de langue / Switch language">EN</button>
   </div>
 </header>
 
-<main id="main">
-  <div class="wrap intro">
-    <div>
-      <h1>
-        <span data-fr>Lève la main.<br>Ton Mac <em>change de bureau.</em></span>
-        <span data-en>Raise your hand.<br>Your Mac <em>switches desktops.</em></span>
-      </h1>
-      <p class="lede">
-        <span data-fr>Swish utilise la caméra de ton Mac pour reconnaître quelques gestes simples et les transformer en actions : changer de bureau, mettre la musique en pause, avancer une présentation ou lancer un raccourci clavier.</span>
-        <span data-en>Swish uses your Mac's camera to recognize a few simple gestures and turn them into actions: switch desktops, pause music, advance a slideshow or press a keyboard shortcut.</span>
-      </p>
-      <div class="actions">
-        <a class="download" href="https://github.com/CHINW3/swish/releases/latest/download/Swish.zip">
-          <span data-fr>Télécharger Swish</span><span data-en>Download Swish</span> ↓
-        </a>
-        <a href="#installer"><span data-fr>Comment l'installer</span><span data-en>How to install it</span></a>
-      </div>
-      <p class="meta">v2.0 · macOS 13+ · Apple Silicon &amp; Intel · 1,2 Mo · <span data-fr>gratuit</span><span data-en>free</span></p>
+<main>
+  <div class="wrap hero">
+    <img class="icone" src="logo.svg" alt="Icône Swish">
+    <p class="nom">Swish</p>
+    <h1><span data-fr>Lève la main.<br>Ton Mac fait le reste.</span><span data-en>Raise your hand.<br>Your Mac does the rest.</span></h1>
+    <p class="sous">
+      <span data-fr>Change de bureau, mets ta musique en pause ou avance une présentation, sans toucher au clavier.</span>
+      <span data-en>Switch desktops, pause your music or advance a slideshow, without touching the keyboard.</span>
+    </p>
+    <div class="actions">
+      <a class="bouton" href="https://github.com/CHINW3/swish/releases/latest/download/Swish.zip"><span data-fr>Télécharger gratuitement</span><span data-en>Download for free</span></a>
+      <a class="lien" href="#installer"><span data-fr>Comment l'installer ›</span><span data-en>How to install ›</span></a>
     </div>
-
-    <div class="table">
-      <table>
-        <caption><span data-fr>Réglages par défaut</span><span data-en>Default setup</span></caption>
-        <tbody>
-          <tr><td class="g">🤚</td><td class="n"><span data-fr>Main gauche levée</span><span data-en>Left hand up</span></td><td class="a"><span data-fr>bureau à gauche</span><span data-en>desktop left</span></td></tr>
-          <tr><td class="g">✋</td><td class="n"><span data-fr>Main droite levée</span><span data-en>Right hand up</span></td><td class="a"><span data-fr>bureau à droite</span><span data-en>desktop right</span></td></tr>
-          <tr><td class="g">🙌</td><td class="n"><span data-fr>Les deux mains</span><span data-en>Both hands</span></td><td class="a">Mission Control</td></tr>
-          <tr><td class="g">✊</td><td class="n"><span data-fr>Poing fermé</span><span data-en>Closed fist</span></td><td class="a"><span data-fr>lecture / pause</span><span data-en>play / pause</span></td></tr>
-          <tr><td class="g">👍</td><td class="n"><span data-fr>Pouce en l'air</span><span data-en>Thumbs up</span></td><td class="a">volume +</td></tr>
-          <tr><td class="g">👎</td><td class="n"><span data-fr>Pouce vers le bas</span><span data-en>Thumbs down</span></td><td class="a">volume −</td></tr>
-        </tbody>
-      </table>
-      <p class="note">
-        <span data-fr>Les trois derniers font partie du profil Musique. Chaque geste peut être changé dans l'app.</span>
-        <span data-en>The last three are in the Music profile. Every gesture can be reassigned in the app.</span>
-      </p>
-    </div>
+    <p class="meta"><span data-fr>macOS 13 ou plus récent · Apple Silicon et Intel</span><span data-en>macOS 13 or later · Apple Silicon and Intel</span></p>
   </div>
 
-  <figure class="wrap demo" id="demo">
-    <video src="swish-demo.mp4" autoplay muted loop playsinline preload="auto"
-           aria-label="Démo animée de Swish / Animated Swish demo"></video>
-    <figcaption>
-      <span data-fr>Démo animée : main droite levée → bureau suivant · poing → lecture / pause</span>
-      <span data-en>Animated demo: right hand up → next desktop · fist → play / pause</span>
-    </figcaption>
-  </figure>
+  <div class="wrap demo">
+    <video src="swish-demo.mp4" autoplay muted loop playsinline preload="auto" aria-label="Démo animée de Swish / Animated Swish demo"></video>
+  </div>
 
-  <section id="usages">
+  <section class="gris" id="gestes">
     <div class="wrap">
-      <p class="label"><span data-fr>Usages</span><span data-en>Uses</span></p>
-      <h2><span data-fr>Pour quand tes mains sont loin du clavier.</span><span data-en>For when your hands are away from the keyboard.</span></h2>
-      <div class="uses">
-        <div class="use">
-          <h3><span data-fr>Plusieurs bureaux</span><span data-en>Multiple desktops</span></h3>
-          <p><span data-fr>Passe d'un bureau à l'autre comme avec le geste à trois doigts du trackpad, sans toucher au Mac. Swish envoie <kbd>⌃←</kbd> et <kbd>⌃→</kbd>.</span><span data-en>Move between desktops like the three-finger trackpad swipe, without touching the Mac. Swish sends <kbd>⌃←</kbd> and <kbd>⌃→</kbd>.</span></p>
+      <h2><span data-fr>Un geste. Une action.</span><span data-en>A gesture. An action.</span></h2>
+      <p class="intro"><span data-fr>Les réglages de départ. Chaque geste peut faire autre chose.</span><span data-en>The default setup. Every gesture can be changed.</span></p>
+      <div class="gestes">
+        <div class="geste"><div class="e">🤚</div><b><span data-fr>Main gauche</span><span data-en>Left hand</span></b><span><span data-fr>Bureau à gauche</span><span data-en>Desktop left</span></span></div>
+        <div class="geste"><div class="e">✋</div><b><span data-fr>Main droite</span><span data-en>Right hand</span></b><span><span data-fr>Bureau à droite</span><span data-en>Desktop right</span></span></div>
+        <div class="geste"><div class="e">🙌</div><b><span data-fr>Deux mains</span><span data-en>Both hands</span></b><span>Mission Control</span></div>
+        <div class="geste"><div class="e">✊</div><b><span data-fr>Poing</span><span data-en>Fist</span></b><span><span data-fr>Lecture / pause</span><span data-en>Play / pause</span></span></div>
+        <div class="geste"><div class="e">👍</div><b><span data-fr>Pouce levé</span><span data-en>Thumbs up</span></b><span><span data-fr>Volume +</span><span data-en>Volume up</span></span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap capture" id="capture">
+    <h2><span data-fr>Tout se règle en un coup d'œil.</span><span data-en>Everything at a glance.</span></h2>
+    <p class="intro"><span data-fr>Ce que voit la caméra à gauche, tes gestes et tes profils à droite.</span><span data-en>What the camera sees on the left, your gestures and profiles on the right.</span></p>
+    <img src="swish-capture.png" alt="Fenêtre de Swish : aperçu de la caméra et réglages des gestes / Swish window: camera preview and gesture settings">
+  </div>
+
+  <section>
+    <div class="wrap">
+      <h2><span data-fr>Fait pour ton Mac.</span><span data-en>Made for your Mac.</span></h2>
+      <div class="tuiles">
+        <div class="tuile">
+          <h3><span data-fr>Plusieurs actions d'un coup.</span><span data-en>Several actions at once.</span></h3>
+          <p><span data-fr>Un raccourci, une app, un site, un Raccourci ou un AppleScript, à la suite.</span><span data-en>A shortcut, an app, a website, a Shortcut or an AppleScript, one after another.</span></p>
+          <div class="chaine">
+            <div>✌️ <span data-fr>Victoire</span><span data-en>Peace sign</span></div>
+            <div><span data-fr>Ouvrir Spotify</span><span data-en>Open Spotify</span><i><span data-fr>puis 2 s</span><span data-en>then 2 s</span></i></div>
+            <div><span data-fr>Lecture</span><span data-en>Play</span></div>
+          </div>
         </div>
-        <div class="use">
-          <h3><span data-fr>Musique</span><span data-en>Music</span></h3>
-          <p><span data-fr>Pause, chanson suivante, volume. Le profil Musique s'active tout seul quand Musique ou Spotify est ouvert.</span><span data-en>Pause, next song, volume. The Music profile turns on by itself when Music or Spotify is in front.</span></p>
+        <div class="tuile noire">
+          <div class="grand">🔒</div>
+          <h3><span data-fr>La vidéo ne quitte jamais ton Mac.</span><span data-en>The video never leaves your Mac.</span></h3>
+          <p><span data-fr>La détection se fait avec Vision, l'outil d'Apple. Pas de compte, rien n'est envoyé.</span><span data-en>Detection runs on Apple's Vision framework. No account, nothing is sent.</span></p>
         </div>
-        <div class="use">
-          <h3><span data-fr>Présentations</span><span data-en>Presentations</span></h3>
-          <p><span data-fr>Balaie la main dans les airs pour changer de diapo dans Keynote ou PowerPoint, debout devant la classe.</span><span data-en>Swipe your hand through the air to change slides in Keynote or PowerPoint while standing in front of the class.</span></p>
+        <div class="tuile">
+          <div class="grand">🎛️</div>
+          <h3><span data-fr>Le bon profil, tout seul.</span><span data-en>The right profile, automatically.</span></h3>
+          <p><span data-fr>Musique quand Spotify est ouvert, Présentation dans Keynote.</span><span data-en>Music when Spotify is open, Presentation in Keynote.</span></p>
         </div>
-        <div class="use">
-          <h3><span data-fr>Tout le reste</span><span data-en>Everything else</span></h3>
-          <p><span data-fr>N'importe quel raccourci clavier, une app, un site, un Raccourci de l'app Raccourcis ou un AppleScript.</span><span data-en>Any keyboard shortcut, an app, a website, a Shortcut from the Shortcuts app or an AppleScript.</span></p>
+        <div class="tuile">
+          <div class="grand">🔋</div>
+          <h3><span data-fr>Doux pour la batterie.</span><span data-en>Easy on the battery.</span></h3>
+          <p><span data-fr>La caméra s'éteint quand tu pars ou quand tu verrouilles ton Mac.</span><span data-en>The camera turns off when you leave or lock your Mac.</span></p>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="macros">
+  <section class="gris" id="installer">
     <div class="wrap">
-      <div>
-        <p class="label"><span data-fr>Actions en chaîne</span><span data-en>Chained actions</span></p>
-        <h2><span data-fr>Un geste peut en faire plusieurs.</span><span data-en>One gesture can do several things.</span></h2>
-        <p><span data-fr>Ajoute des actions à la suite, avec un délai entre chacune. Chaque geste a aussi ses propres réglages : temps de maintien, pause, répétition et son.</span><span data-en>Add actions one after another, with a delay between each. Every gesture also has its own settings: hold time, pause, repeat and sound.</span></p>
+      <h2><span data-fr>Prêt en une minute.</span><span data-en>Ready in a minute.</span></h2>
+      <div class="etapes">
+        <div class="etape"><div class="n">1</div><h3><span data-fr>Télécharge</span><span data-en>Download</span></h3><p><span data-fr>Dézippe et glisse Swish dans Applications.</span><span data-en>Unzip and drag Swish into Applications.</span></p></div>
+        <div class="etape"><div class="n">2</div><h3><span data-fr>Ouvre</span><span data-en>Open</span></h3><p><span data-fr>Réglages Système › Confidentialité et sécurité › Ouvrir quand même.</span><span data-en>System Settings › Privacy &amp; Security › Open Anyway.</span></p></div>
+        <div class="etape"><div class="n">3</div><h3><span data-fr>Si bloquée</span><span data-en>If blocked</span></h3><p><span data-fr>Dans Terminal :</span><span data-en>In Terminal:</span><br><code>xattr -cr /Applications/Swish.app</code></p></div>
+        <div class="etape"><div class="n">4</div><h3><span data-fr>Autorise</span><span data-en>Allow</span></h3><p><span data-fr>Caméra et Accessibilité. Lève la main.</span><span data-en>Camera and Accessibility. Raise your hand.</span></p></div>
       </div>
-      <ol class="chain" aria-label="Exemple">
-        <li>✌️ <span data-fr>Victoire</span><span data-en>Peace sign</span></li>
-        <li><span data-fr>ouvrir Spotify</span><span data-en>open Spotify</span></li>
-        <li><span class="t"><span data-fr>attendre 2 s</span><span data-en>wait 2 s</span></span></li>
-        <li><span data-fr>lecture</span><span data-en>play</span></li>
-        <li><span data-fr>bureau à droite</span><span data-en>desktop right</span></li>
-      </ol>
-    </div>
-  </section>
-
-  <section id="installer" class="install">
-    <div class="wrap">
-      <div>
-        <p class="label"><span data-fr>Installer</span><span data-en>Install</span></p>
-        <h2><span data-fr>Quatre étapes.</span><span data-en>Four steps.</span></h2>
+      <div class="centre">
+        <a class="bouton" href="https://github.com/CHINW3/swish/releases/latest/download/Swish.zip"><span data-fr>Télécharger Swish</span><span data-en>Download Swish</span></a>
       </div>
-      <ol class="steps">
-        <li><div>
-          <h3><span data-fr>Télécharge et dézippe</span><span data-en>Download and unzip</span></h3>
-          <p><span data-fr>Glisse <b>Swish.app</b> dans le dossier Applications.</span><span data-en>Drag <b>Swish.app</b> into your Applications folder.</span></p>
-        </div></li>
-        <li><div>
-          <h3><span data-fr>Ouvre-la une première fois</span><span data-en>Open it once</span></h3>
-          <p><span data-fr>macOS va la bloquer : elle ne vient pas de l'App Store. Va dans Réglages Système → Confidentialité et sécurité, puis clique sur « Ouvrir quand même ».</span><span data-en>macOS will block it because it isn't from the App Store. Go to System Settings → Privacy &amp; Security and click "Open Anyway".</span></p>
-        </div></li>
-        <li><div>
-          <h3><span data-fr>Si macOS dit qu'elle est endommagée</span><span data-en>If macOS says it's damaged</span></h3>
-          <p><span data-fr>Colle cette ligne dans Terminal, puis rouvre l'app :</span><span data-en>Paste this line in Terminal, then open the app again:</span></p>
-          <pre>xattr -cr /Applications/Swish.app</pre>
-        </div></li>
-        <li><div>
-          <h3><span data-fr>Donne les deux permissions</span><span data-en>Grant two permissions</span></h3>
-          <p><span data-fr>La caméra, pour voir tes mains, et l'Accessibilité, pour appuyer sur les touches à ta place. L'écran de bienvenue t'y amène.</span><span data-en>Camera, to see your hands, and Accessibility, to press keys for you. The welcome screen walks you through it.</span></p>
-        </div></li>
-      </ol>
     </div>
   </section>
 
-  <section class="privacy">
+  <section id="faq">
     <div class="wrap">
-      <p class="label"><span data-fr>Vie privée</span><span data-en>Privacy</span></p>
-      <p class="big">
-        <span data-fr>La vidéo ne quitte jamais ton Mac.</span>
-        <span data-en>The video never leaves your Mac.</span>
-      </p>
-      <p class="small">
-        <span data-fr>La détection se fait avec Vision, l'outil d'Apple intégré à macOS. Swish n'enregistre pas d'images, n'a pas de compte et n'envoie rien. Quand personne n'est devant l'écran pendant 3 minutes, la caméra s'éteint.</span>
-        <span data-en>Detection runs on Vision, Apple's framework built into macOS. Swish doesn't record images, has no account and sends nothing. After 3 minutes with nobody in front of the screen, the camera turns off.</span>
-      </p>
-    </div>
-  </section>
-
-  <section id="questions" class="faq">
-    <div class="wrap">
-      <p class="label">FAQ</p>
       <h2><span data-fr>Questions</span><span data-en>Questions</span></h2>
-      <details>
-        <summary><span data-fr>Est-ce que ça use la batterie ?</span><span data-en>Does it drain the battery?</span></summary>
-        <p><span data-fr>Un peu, comme tout ce qui garde la caméra allumée. Sur batterie, Swish analyse 10 images par seconde au lieu de 30, et la caméra s'arrête quand l'écran dort ou que le Mac est verrouillé.</span><span data-en>A little, like anything that keeps the camera on. On battery, Swish analyzes 10 frames per second instead of 30, and the camera stops when the display sleeps or the Mac is locked.</span></p>
-      </details>
-      <details>
-        <summary><span data-fr>Ça marche sur un vieux Mac Intel ?</span><span data-en>Does it work on an older Intel Mac?</span></summary>
-        <p><span data-fr>Oui, s'il a macOS 13 (Ventura) ou plus récent. La même app marche sur Intel et Apple Silicon.</span><span data-en>Yes, as long as it runs macOS 13 (Ventura) or later. The same app runs on Intel and Apple Silicon.</span></p>
-      </details>
-      <details>
-        <summary><span data-fr>Ça change de bureau quand je me gratte la tête.</span><span data-en>It switches desktops when I scratch my head.</span></summary>
-        <p><span data-fr>Dans Réglages, monte la hauteur de la main jusqu'au nez, ou augmente le temps de maintien. Tu peux aussi mettre Swish en pause avec <kbd>⌃⌥⌘P</kbd>.</span><span data-en>In Settings, raise the hand height to nose level or increase the hold time. You can also pause Swish with <kbd>⌃⌥⌘P</kbd>.</span></p>
-      </details>
-      <details>
-        <summary><span data-fr>Comment l'enlever ?</span><span data-en>How do I remove it?</span></summary>
-        <p><span data-fr>Quitte Swish depuis l'icône de la main en haut de l'écran, puis mets Swish.app à la corbeille.</span><span data-en>Quit Swish from the hand icon in the menu bar, then move Swish.app to the Trash.</span></p>
-      </details>
+      <div class="faq">
+        <details>
+          <summary><span data-fr>Est-ce que ça use la batterie ?</span><span data-en>Does it drain the battery?</span></summary>
+          <p><span data-fr>Un peu. Sur batterie, Swish analyse moins d'images, et la caméra s'arrête quand l'écran dort ou que le Mac est verrouillé.</span><span data-en>A little. On battery Swish analyzes fewer frames, and the camera stops when the display sleeps or the Mac is locked.</span></p>
+        </details>
+        <details>
+          <summary><span data-fr>Ça change de bureau quand je me gratte la tête.</span><span data-en>It switches desktops when I scratch my head.</span></summary>
+          <p><span data-fr>Monte la hauteur de la main ou le temps de maintien dans Réglages. Pause rapide : ⌃⌥⌘P.</span><span data-en>Raise the hand height or hold time in Settings. Quick pause: ⌃⌥⌘P.</span></p>
+        </details>
+        <details>
+          <summary><span data-fr>Pourquoi macOS dit qu'elle est endommagée ?</span><span data-en>Why does macOS say it's damaged?</span></summary>
+          <p><span data-fr>Swish n'est pas signée par Apple. La commande de l'étape 3 règle ça.</span><span data-en>Swish isn't signed by Apple. The command in step 3 fixes it.</span></p>
+        </details>
+        <details>
+          <summary><span data-fr>Comment l'enlever ?</span><span data-en>How do I remove it?</span></summary>
+          <p><span data-fr>Quitte Swish depuis la main en haut de l'écran, puis mets l'app à la corbeille.</span><span data-en>Quit Swish from the hand icon in the menu bar, then move the app to the Trash.</span></p>
+        </details>
+      </div>
     </div>
   </section>
 </main>
 
 <footer>
   <div class="wrap">
-    <span><span data-fr>Fait par Grégoire Leduc · licence MIT</span><span data-en>Made by Grégoire Leduc · MIT license</span></span>
-    <a href="https://github.com/CHINW3/swish">github.com/CHINW3/swish</a>
+    <span><span data-fr>Fait par Grégoire Leduc · licence MIT · Swish n'est pas affilié à Apple.</span><span data-en>Made by Grégoire Leduc · MIT license · Swish is not affiliated with Apple.</span></span>
+    <a href="https://github.com/CHINW3/swish">GitHub</a>
   </div>
 </footer>
 
@@ -342,11 +263,11 @@
     appliquer(depart);
     bouton.addEventListener('click', function () { appliquer(root.lang === 'fr' ? 'en' : 'fr'); });
 
-    // La démo ne s'affiche que si la vidéo existe
-    var demo = document.getElementById('demo');
-    var video = demo.querySelector('video');
-    video.addEventListener('loadeddata', function () { demo.classList.add('prete'); });
-    if (video.readyState >= 2) demo.classList.add('prete');
+    // La capture ne s'affiche que si l'image existe
+    var cap = document.getElementById('capture');
+    var img = cap.querySelector('img');
+    img.addEventListener('load', function () { cap.classList.add('prete'); });
+    if (img.complete && img.naturalWidth) cap.classList.add('prete');
   })();
 </script>
 </body>
